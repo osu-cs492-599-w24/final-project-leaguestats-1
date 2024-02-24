@@ -12,7 +12,7 @@ Description.
 
 ### Install
 
-### Execution
+### Usage
 
 ## Authors
 
