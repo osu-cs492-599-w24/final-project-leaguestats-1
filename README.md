@@ -16,10 +16,10 @@ Description.
 
 ## Authors
 
-Oliver Zhou (zhouo@oregonstate.edu)
-Trent Matsumura (matsumut@oregonstate.edu)
-Leon Ong
-Jongwon An
+Oliver Zhou (zhouo@oregonstate.edu)  
+Trent Matsumura (matsumut@oregonstate.edu)  
+Leon Ong  
+Jongwon An  
 
 ## Version History
 
