@@ -25,21 +25,22 @@ class SummonerDataRepository (
     ) : Result<SummonerData?> {
         return if (shouldFetch(name)) {
             withContext(ioDispatcher) {
+                try {
                     Log.d("SummonerDataRepository", "Attempting to call Retrofit service.")
                     val response = service.loadSummonerData(name, apiKey)
-                    val body = response.body()
-                    if (body != null) {
-                        Log.d("SummonerDataRepository", "Successful response: $body")
+                    if (response.isSuccessful) {
+                        Log.d("SummonerDataRepository", "Successful response: ${response.body()}")
+                        cachedData = response.body()
+                        summonerName = name
+                        timeStamp = timeSource.markNow()
+                        Result.success(cachedData)
                     } else {
-                        Log.d("SummonerDataRepository", "Response was successful but the body is null")
-                        Log.d("SummonerDataRepository", "Raw response: ${response.raw()}")
+                        Log.e("SummonerDataRepository", "Error response: ${response.errorBody()?.string()}")
+                        Result.failure(Exception(response.errorBody()?.string()))
                     }
-                    Log.d("SummonerDataRepository", "Successful response: ${response.body()}")
-                    cachedData = response.body()
-                    summonerName = name
-                    timeStamp = timeSource.markNow()
-                    Result.success(cachedData)
-
+                } catch (e: Exception) {
+                    Result.failure(e)
+                }
             }
         } else {
             Result.success(cachedData!!)
