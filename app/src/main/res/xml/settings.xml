@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:key="@string/key_region"
+        android:title="@string/title_region"
+        android:dialogTitle="@string/tip_region"
+        android:entries="@array/region_options"
+        android:entryValues="@array/region_values"
+        android:defaultValue="@string/default_region"
+        app:useSimpleSummaryProvider="true" />
+</PreferenceScreen>
