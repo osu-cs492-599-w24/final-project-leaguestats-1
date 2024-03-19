@@ -3,9 +3,11 @@
     <string-array name="region_options">
         <item>North America</item>
         <item>Korea</item>
+        <item>Japan</item>
     </string-array>
     <string-array name="region_values">
-        <item>NA</item>
-        <item>KR</item>
+        <item>na1</item>
+        <item>kr</item>
+        <item>jp1</item>
     </string-array>
 </resources>
