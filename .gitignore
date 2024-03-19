@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+/.idea/deploymentTargetDropDown.xml
+/.idea/compiler.xml
+/.idea/kotlinc.xml
+/app/src/main/java/com/league/leaguestats/data/rank/RankData.kt
+/app/src/main/java/com/league/leaguestats/data/rank/RankDataRepository.kt

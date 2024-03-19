@@ -1,5 +1,6 @@
 package com.league.leaguestats.data
 
+import com.league.leaguestats.data.rank.RankData
 import com.league.leaguestats.data.summoner.SummonerData
 import com.squareup.moshi.Moshi
 import retrofit2.Response
