@@ -24,9 +24,9 @@
 
     <fragment
         android:id="@+id/navigation_tft"
-        android:name="com.league.leaguestats.ui.tft.TFTFragment"
-        android:label="@string/title_tft"
-        tools:layout="@layout/fragment_tft">
+        android:name="com.league.leaguestats.ui.rank.RankFragment"
+        android:label="@string/title_rank"
+        tools:layout="@layout/fragment_rank">
     </fragment>
 
     <fragment

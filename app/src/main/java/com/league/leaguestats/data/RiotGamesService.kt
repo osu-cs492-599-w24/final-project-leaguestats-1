@@ -33,7 +33,18 @@ interface RiotGamesService {
     ) : Response<SummonerData>
 
     companion object {
-        private const val BASE_URL = "https://na1.api.riotgames.com"
+        private var userRegion = "na1"
+
+        private fun getBaseUrl(userRegion: String): String {
+            val region = when (userRegion) {
+                "na1" -> "na1"
+                "jp1" -> "jp1"
+                else -> "na1" // Default region
+            }
+            return "https://$region.api.riotgames.com"
+        }
+
+        private val BASE_URL = getBaseUrl(userRegion)
 
         /**
          * This method can be called as `RiotGamesService.create()` to create an object
