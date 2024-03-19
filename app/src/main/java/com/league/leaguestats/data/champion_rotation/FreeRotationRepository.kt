@@ -4,7 +4,6 @@ import com.league.leaguestats.data.summoner.SummonerData
 
 
 import android.util.Log
-import com.league.leaguestats.data.RiotGamesService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
