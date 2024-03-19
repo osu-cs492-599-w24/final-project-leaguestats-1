@@ -41,6 +41,7 @@ interface RiotGamesService {
          * the RiotGames API.
          */
 
+
         fun create(): RiotGamesService {
             val moshi = Moshi.Builder()
                 .build()
