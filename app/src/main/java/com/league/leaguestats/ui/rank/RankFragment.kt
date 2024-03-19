@@ -16,7 +16,7 @@ import com.league.leaguestats.data.CircleTransform
 import com.league.leaguestats.data.rank.RankData
 
 class RankFragment : Fragment(R.layout.fragment_rank) {
-    private val args: RankFragmentArgs by navArgs()
+    // private val args: RankFragmentArgs by navArgs()
     private val viewModel: RankViewModel by viewModels()
 
     private lateinit var summonerNameTV: TextView

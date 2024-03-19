@@ -1,40 +1,45 @@
-package com.league.leaguestats.data.champion_rotation
-
-import com.league.leaguestats.data.summoner.SummonerData
-
+package com.league.leaguestats.data.rank
 
 import android.util.Log
+import com.league.leaguestats.data.RiotGamesService
+import com.league.leaguestats.data.rank.RankData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.TimeSource
 
-class FreeRotationRepository (
-    private val service: ChampionRotationService,
+class RankDataRepository (
+    private val service: RiotGamesService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    private var cachedData: FreeRotation? = null
+    private var queue: String? = null
+    private var cachedData: RankData? = null
 
     private val cacheMaxAge = 5.minutes
     private val timeSource = TimeSource.Monotonic
     private var timeStamp = timeSource.markNow()
 
-    suspend fun loadRotationData(
+    suspend fun loadRankData(
+        queueSelect: String,
         apiKey: String
-    ) : Result<FreeRotation?> {
-        return if (shouldFetch()) {
+    ) : Result<RankData?> {
+        return if (shouldFetch(queueSelect)) {
             withContext(ioDispatcher) {
                 try {
-                    Log.d("FreeRotationDataRepository", "Attempting to call Retrofit service.")
-                    val response = service.loadChampionRotationData(apiKey)
+                    Log.d("RankDataRepository", "Attempting to call Retrofit service.")
+                    val response = service.loadRankData(queueSelect, apiKey)
                     if (response.isSuccessful) {
-                        Log.d("FreeRotationDataRepository", "Successful response: ${response.body()}")
+                        Log.d("RankDataRepository", "Successful response: ${response.body()}")
                         cachedData = response.body()
+                        queue = queueSelect
                         timeStamp = timeSource.markNow()
                         Result.success(cachedData)
                     } else {
-                        Log.e("FreeRotationDataRepository", "Error response: ${response.errorBody()?.string()}")
+                        Log.e(
+                            "RankDataRepository",
+                            "Error response: ${response.errorBody()?.string()}"
+                        )
                         Result.failure(Exception(response.errorBody()?.string()))
                     }
                 } catch (e: Exception) {
@@ -46,7 +51,8 @@ class FreeRotationRepository (
         }
     }
 
-    private fun shouldFetch(): Boolean =
+    private fun shouldFetch(queueSelect: String?): Boolean =
         cachedData == null
+                || queueSelect != queue
                 || (timeStamp + cacheMaxAge).hasPassedNow()
 }

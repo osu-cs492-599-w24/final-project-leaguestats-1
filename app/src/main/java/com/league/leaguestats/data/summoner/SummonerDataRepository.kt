@@ -1,7 +1,6 @@
 package com.league.leaguestats.data.summoner
 
 import android.util.Log
-import com.league.leaguestats.data.RiotGamesService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -9,8 +8,8 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.TimeSource
 
 class SummonerDataRepository (
-    private val service: RiotGamesService,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val service: ProfileService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     private var summonerName: String? = null
     private var cachedData: SummonerData? = null
@@ -28,8 +27,8 @@ class SummonerDataRepository (
                 try {
                     Log.d("SummonerDataRepository", "Attempting to call Retrofit service.")
                     val response = service.loadSummonerData(name, apiKey)
+                    Log.d("SummonerDataRepository", "Response: ${response.raw()}")
                     if (response.isSuccessful) {
-                        Log.d("SummonerDataRepository", "Successful response: ${response.body()}")
                         cachedData = response.body()
                         summonerName = name
                         timeStamp = timeSource.markNow()

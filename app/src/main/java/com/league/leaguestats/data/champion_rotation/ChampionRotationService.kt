@@ -1,13 +1,10 @@
 package com.league.leaguestats.data.champion_rotation
 
-import com.league.leaguestats.data.RiotGamesService
-import com.league.leaguestats.data.summoner.SummonerData
 import com.squareup.moshi.Moshi
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ChampionRotationService {

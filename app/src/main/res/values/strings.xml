@@ -21,5 +21,5 @@
     <string name="key_region">summoner_region</string>
     <string name="title_region">Region</string>
     <string name="tip_region">Choose Region</string>
-    <string name="default_region">NA</string>
+    <string name="default_region">na1</string>
 </resources>

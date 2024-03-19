@@ -1,8 +1,9 @@
-package com.league.leaguestats.data
+package com.league.leaguestats.data.summoner
 
-import com.league.leaguestats.data.rank.RankData
-import com.league.leaguestats.data.summoner.SummonerData
+import android.util.Log
 import com.squareup.moshi.Moshi
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -13,7 +14,7 @@ import retrofit2.http.Path
 /**
  * Riot Games API Retrofit Service
  */
-interface RiotGamesService {
+interface ProfileService {
     /**
      * This method is used to query the Riot Games API summoner-by-name method:
      * https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name.
@@ -34,18 +35,12 @@ interface RiotGamesService {
     ) : Response<SummonerData>
 
     companion object {
-        private var userRegion = "na1"
-
         private fun getBaseUrl(userRegion: String): String {
-            val region = when (userRegion) {
-                "na1" -> "na1"
-                "jp1" -> "jp1"
-                else -> "na1" // Default region
+            return when (userRegion) {
+                "na1", "jp1", "kr" -> "https://$userRegion.api.riotgames.com"
+                else -> "https://na1.api.riotgames.com"
             }
-            return "https://$region.api.riotgames.com"
         }
-
-        private val BASE_URL = getBaseUrl(userRegion)
 
         /**
          * This method can be called as `RiotGamesService.create()` to create an object
@@ -53,15 +48,23 @@ interface RiotGamesService {
          * the RiotGames API.
          */
 
-
-        fun create(): RiotGamesService {
+        fun create(region: String): ProfileService {
+            val baseUrl = getBaseUrl(region)
+            Log.d("RiotGamesService", "Querying with baseUrl: $baseUrl")
+            val logger = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+            val client = OkHttpClient.Builder()
+                .addInterceptor(logger)
+                .build()
             val moshi = Moshi.Builder()
                 .build()
             return Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
+                .client(client)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build()
-                .create(RiotGamesService::class.java)
+                .create(ProfileService::class.java)
         }
     }
 }
