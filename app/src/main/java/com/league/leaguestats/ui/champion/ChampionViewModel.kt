@@ -4,12 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.league.leaguestats.data.RiotGamesService
 import com.league.leaguestats.data.champion_rotation.ChampionRotationService
 import com.league.leaguestats.data.champion_rotation.FreeRotation
 import com.league.leaguestats.data.champion_rotation.FreeRotationRepository
-import com.league.leaguestats.data.summoner.SummonerData
-import com.league.leaguestats.data.summoner.SummonerDataRepository
 import kotlinx.coroutines.launch
 
 class ChampionViewModel : ViewModel() {
