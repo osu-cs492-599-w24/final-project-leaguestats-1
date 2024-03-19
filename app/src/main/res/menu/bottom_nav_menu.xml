@@ -12,9 +12,9 @@
         android:title="@string/nav_bar_champion" />
 
     <item
-        android:id="@+id/navigation_tournament"
+        android:id="@+id/navigation_tft"
         android:icon="@drawable/ic_baseline_medal_24"
-        android:title="@string/nav_bar_tournament" />
+        android:title="@string/nav_bar_tft" />
 
     <item
         android:id="@+id/navigation_settings"

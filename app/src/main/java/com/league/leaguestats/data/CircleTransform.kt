@@ -18,7 +18,6 @@ class CircleTransform : BitmapTransformation() {
         val x = (source.width - size) / 2
         val y = (source.height - size) / 2
 
-        // This Bitmap object could be reused to avoid allocations.
         val squared = Bitmap.createBitmap(source, x, y, size, size)
 
         val result = pool.get(size, size, Bitmap.Config.ARGB_8888)
