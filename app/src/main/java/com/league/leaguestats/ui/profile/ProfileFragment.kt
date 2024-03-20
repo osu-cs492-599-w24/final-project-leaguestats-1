@@ -9,7 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.league.leaguestats.R
 import com.league.leaguestats.data.summoner.SummonerData
 import com.league.leaguestats.data.CircleTransform
@@ -17,6 +20,11 @@ import com.league.leaguestats.data.CircleTransform
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val args: ProfileFragmentArgs by navArgs()
     private val viewModel: ProfileViewModel by viewModels()
+    private val profileAdapter = ProfileAdapter()
+
+    private lateinit var matchHistoryListRV: RecyclerView
+    private lateinit var loadingErrorTV: TextView
+    private lateinit var loadingIndicator: CircularProgressIndicator
 
     private lateinit var summonerNameTV: TextView
     private lateinit var prefs: SharedPreferences
@@ -25,6 +33,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loadingErrorTV = view.findViewById(R.id.tv_loading_error)
+        loadingIndicator = view.findViewById(R.id.loading_indicator)
+
+        /*
+         * Set up RecyclerView.
+         */
+        matchHistoryListRV = view.findViewById(R.id.recycler_match_history)
+        matchHistoryListRV.layoutManager = LinearLayoutManager(requireContext())
+        matchHistoryListRV.setHasFixedSize(true)
+        matchHistoryListRV.adapter = profileAdapter
+        
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         Log.d("ProfileFragment", "Using argument ${args.searchQuery}")
@@ -35,14 +54,44 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 bind(summonerData)
             }
         }
+
         region = prefs.getString(getString(R.string.key_region), "na1").toString()
         viewModel.loadSummonerData(args.searchQuery, getString(R.string.riotgames_api_key), region)
+
+        viewModel.matchHistoryData.observe(viewLifecycleOwner) { matchHistory ->
+            if (matchHistory != null) {
+                profileAdapter.loadMatchHistoryData(matchHistory)
+                matchHistoryListRV.visibility = View.VISIBLE
+                matchHistoryListRV.scrollToPosition(0)
+            }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                loadingErrorTV.text = "error"
+                loadingErrorTV.visibility = View.VISIBLE
+                Log.e(tag, "Error fetching data: ${error.message}")
+                error.printStackTrace()
+            }
+        }
+
+        viewModel.loading.observe(viewLifecycleOwner) { loading ->
+            if (loading) {
+                loadingIndicator.visibility = View.VISIBLE
+                loadingErrorTV.visibility = View.INVISIBLE
+                matchHistoryListRV.visibility = View.INVISIBLE
+            } else {
+                loadingIndicator.visibility = View.INVISIBLE
+            }
+        }
+        viewModel.loadMatchHistoryData("D5TENsrNRmN_7C0AzsV8j5r2rsSjtYiropqy_bIspU6u3ppnr49HKmxEGU8Ng5T5aElVOdFQbdIiiQ", getString(R.string.riotgames_api_key), region)
     }
 
     override fun onResume() {
         super.onResume()
-        region = prefs.getString(getString(R.string.key_region), "na1").toString()
-        viewModel.loadSummonerData(args.searchQuery, getString(R.string.riotgames_api_key), region,)
+        //region = prefs.getString(getString(R.string.key_region), "na1").toString()
+        //viewModel.loadSummonerData(args.searchQuery, getString(R.string.riotgames_api_key), region)
+        //viewModel.loadMatchHistoryData("D5TENsrNRmN_7C0AzsV8j5r2rsSjtYiropqy_bIspU6u3ppnr49HKmxEGU8Ng5T5aElVOdFQbdIiiQ", getString(R.string.riotgames_api_key), region)
     }
 
     private fun bind(summonerData: SummonerData) {
