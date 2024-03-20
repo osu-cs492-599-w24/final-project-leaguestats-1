@@ -1,4 +1,4 @@
-package com.league.leaguestats.data.champion_rotation
+package com.league.leaguestats.data.summoner
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
@@ -7,31 +7,34 @@ import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.TimeSource
 
-class FreeRotationRepository (
-    private val service: ChampionRotationService,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class MatchHistoryRepository (
+    private val service: MatchService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
-    private var cachedData: FreeRotation? = null
+    private var puuId: String? = null
+    private var cachedData: List<String>? = null
 
     private val cacheMaxAge = 5.minutes
     private val timeSource = TimeSource.Monotonic
     private var timeStamp = timeSource.markNow()
 
-    suspend fun loadRotationData(
+    suspend fun loadMatchHistoryData(
+        puuid: String,
         apiKey: String
-    ) : Result<FreeRotation?> {
-        return if (shouldFetch()) {
+    ) : Result<List<String>?> {
+        return if (shouldFetch(puuid)) {
             withContext(ioDispatcher) {
                 try {
-                    Log.d("FreeRotationDataRepository", "Attempting to call Retrofit service.")
-                    val response = service.loadChampionRotationData(apiKey)
+                    Log.d("MatchHistoryRepository", "Attempting to call Retrofit service.")
+                    val response = service.loadMatchHistoryData(puuid, apiKey)
+                    Log.d("MatchHistoryRepository", "Response: ${response.raw()}")
                     if (response.isSuccessful) {
-                        Log.d("FreeRotationDataRepository", "Successful response: ${response.body()}")
                         cachedData = response.body()
+                        puuId = puuid
                         timeStamp = timeSource.markNow()
                         Result.success(cachedData)
                     } else {
-                        Log.e("FreeRotationDataRepository", "Error response: ${response.errorBody()?.string()}")
+                        Log.e("MatchHistoryRepository", "Error response: ${response.errorBody()?.string()}")
                         Result.failure(Exception(response.errorBody()?.string()))
                     }
                 } catch (e: Exception) {
@@ -43,7 +46,8 @@ class FreeRotationRepository (
         }
     }
 
-    private fun shouldFetch(): Boolean =
+    private fun shouldFetch(puuid: String?): Boolean =
         cachedData == null
+                || puuid != puuId
                 || (timeStamp + cacheMaxAge).hasPassedNow()
 }
