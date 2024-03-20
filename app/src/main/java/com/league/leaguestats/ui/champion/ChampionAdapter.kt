@@ -5,10 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.league.leaguestats.data.champion_rotation.FreeRotation
 import com.league.leaguestats.R
+import com.league.leaguestats.data.champion_rotation.ChampData
+import java.io.File
+import java.net.URL
+
+
 
 class ChampionAdapter: RecyclerView.Adapter<ChampionAdapter.ViewHolder>() {
+
     var freeRotationList: List<Int> = listOf()
 
     /**

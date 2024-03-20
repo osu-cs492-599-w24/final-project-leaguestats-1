@@ -4,10 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.league.leaguestats.data.champion_rotation.ChampData
 import com.league.leaguestats.data.champion_rotation.ChampionRotationService
 import com.league.leaguestats.data.champion_rotation.FreeRotation
 import com.league.leaguestats.data.champion_rotation.FreeRotationRepository
 import kotlinx.coroutines.launch
+import java.io.File
 
 class ChampionViewModel : ViewModel() {
     private val repository = FreeRotationRepository(ChampionRotationService.create())
@@ -17,7 +20,6 @@ class ChampionViewModel : ViewModel() {
     val error: LiveData<Throwable?> = _error
 
     private val _loading = MutableLiveData<Boolean>(false)
-
     val loading: LiveData<Boolean> = _loading
 
     fun loadRotationData(apiKey: String) {
