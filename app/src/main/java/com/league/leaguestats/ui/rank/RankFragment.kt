@@ -77,7 +77,9 @@ class RankFragment : Fragment(R.layout.fragment_rank) {
                 loadingIndicator.visibility = View.INVISIBLE
             }
         }
-
+        /*
+        Testing to see if it is solo queue or flex
+         */
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         Log.d("RankFragment", "Attempting to update region.")
         region = prefs.getString(getString(R.string.key_region), "na1").toString()
@@ -89,7 +91,9 @@ class RankFragment : Fragment(R.layout.fragment_rank) {
         if(queue == "RANKED_SOLO_5x5"){
             title = "Ranked Solo 5x5"
         }
-
+        /*
+        Finding the queue name
+         */
         val queueNameTV: TextView? = view.findViewById(R.id.queue_title)
         if (queueNameTV != null){
             queueNameTV.text = title
