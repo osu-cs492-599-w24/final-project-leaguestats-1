@@ -60,9 +60,11 @@ dependencies {
     implementation("com.squareup.moshi:moshi:1.15.0")
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
 
     testImplementation("junit:junit:4.13.2")
