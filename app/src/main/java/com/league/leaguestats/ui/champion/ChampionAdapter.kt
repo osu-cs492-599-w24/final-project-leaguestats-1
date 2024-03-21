@@ -3,10 +3,15 @@ package com.league.leaguestats.ui.champion
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.league.leaguestats.data.champion_rotation.FreeRotation
 import com.league.leaguestats.R
+import com.league.leaguestats.data.CircleTransform
 import com.league.leaguestats.data.champion_rotation.tempData
 import com.league.leaguestats.data.champion_rotation.Champion
 
@@ -42,9 +47,14 @@ class ChampionAdapter: RecyclerView.Adapter<ChampionAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val champTV: TextView = itemView.findViewById(R.id.champion_id)
-
+//        private val champIV: ImageView = itemView.findViewById(R.id.champion_image)
         fun bind(champRotation: Int, champMap: Map<String,Champion>) {
-            champTV.text = findXByY(champMap, champRotation.toString())
+            val champName = findXByY(champMap, champRotation.toString())
+            champTV.text = champName
+            Glide.with(itemView.context)
+                .load("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/" + champRotation + ".png")
+                .transform(CircleTransform())
+                .into(itemView.findViewById(R.id.champion_image))
         }
         // edited answer from chatgpt from the prompt:
         // if the map is formatted like <x, y>
