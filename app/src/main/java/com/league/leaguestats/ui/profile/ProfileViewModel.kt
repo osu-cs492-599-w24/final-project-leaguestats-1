@@ -1,17 +1,20 @@
 package com.league.leaguestats.ui.profile
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.league.leaguestats.data.summoner.MatchHistory
 import com.league.leaguestats.data.summoner.MatchHistoryRepository
 import com.league.leaguestats.data.summoner.MatchService
 import com.league.leaguestats.data.summoner.ProfileService
 import com.league.leaguestats.data.summoner.SummonerData
 import com.league.leaguestats.data.summoner.SummonerDataRepository
 import kotlinx.coroutines.launch
+
 
 class ProfileViewModel : ViewModel() {
     private var profileService: ProfileService? = null
@@ -74,4 +77,5 @@ class ProfileViewModel : ViewModel() {
             _matchHistoryData.value = result.getOrNull()
         }
     }
+
 }
