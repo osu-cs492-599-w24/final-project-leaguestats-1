@@ -7,34 +7,34 @@ import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.TimeSource
 
-class MatchHistoryRepository (
+class MatchDataRepository (
     private val service: MatchService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
-    private var puuId: String? = null
-    private var cachedData: List<String>? = null
+    private var gameId: String? = null
+    private var cachedData: MatchData? = null
 
     private val cacheMaxAge = 5.minutes
     private val timeSource = TimeSource.Monotonic
     private var timeStamp = timeSource.markNow()
 
-    suspend fun loadMatchHistoryData(
-        puuid: String,
+    suspend fun loadMatchData(
+        gameid: String,
         apiKey: String
-    ) : Result<List<String>?> {
-        return if (shouldFetch(puuid)) {
+    ) : Result<MatchData?> {
+        return if (shouldFetch(gameid)) {
             withContext(ioDispatcher) {
                 try {
-                    Log.d("MatchHistoryRepository", "Attempting to call Retrofit service.")
-                    val response = service.loadMatchHistoryData(puuid, apiKey)
-                    Log.d("MatchHistoryRepository", "Response: ${response.raw()}")
+                    Log.d("MatchDataRepository", "Attempting to call Retrofit service.")
+                    val response = service.loadMatchData(gameid, apiKey)
+                    Log.d("MatchDataRepository", "Response: ${response.raw()}")
                     if (response.isSuccessful) {
                         cachedData = response.body()
-                        puuId = puuid
+                        gameId = gameid
                         timeStamp = timeSource.markNow()
                         Result.success(cachedData)
                     } else {
-                        Log.e("MatchHistoryRepository", "Error response: ${response.errorBody()?.string()}")
+                        Log.e("MatchDataRepository", "Error response: ${response.errorBody()?.string()}")
                         Result.failure(Exception(response.errorBody()?.string()))
                     }
                 } catch (e: Exception) {
@@ -46,8 +46,8 @@ class MatchHistoryRepository (
         }
     }
 
-    private fun shouldFetch(puuid: String?): Boolean =
+    private fun shouldFetch(gameid: String?): Boolean =
         cachedData == null
-                || puuid != puuId
+                || gameid != gameId
                 || (timeStamp + cacheMaxAge).hasPassedNow()
 }

@@ -25,8 +25,9 @@ class MatchHistoryRepository (
         return if (shouldFetch(puuid)) {
             withContext(ioDispatcher) {
                 try {
+
                     Log.d("MatchHistoryRepository", "Attempting to call Retrofit service.")
-                    val response = service.loadMatchHistoryData(puuid, apiKey)
+                    val response = service.loadMatchHistoryData(puuid, 5, apiKey)
                     Log.d("MatchHistoryRepository", "Response: ${response.raw()}")
                     if (response.isSuccessful) {
                         cachedData = response.body()
