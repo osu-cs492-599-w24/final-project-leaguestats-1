@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_home_input"
-        app:layout_constraintVertical_bias="0.8">
+        app:layout_constraintVertical_bias="0.7">
 
         <androidx.compose.ui.platform.ComposeView
             android:id="@+id/compose_view"
