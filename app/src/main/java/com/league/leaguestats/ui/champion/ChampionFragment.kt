@@ -2,13 +2,10 @@ package com.league.leaguestats.ui.champion
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -48,6 +45,11 @@ class ChampionFragment : Fragment(R.layout.fragment_champion) {
             }
         }
 
+        viewModel.champData.observe(viewLifecycleOwner) {champData ->
+            if (champData!=null){
+                championAdapter.updateChampData(champData)
+            }
+        }
         /*
          * Set up an observer on the error associated with the current API call.  If the error is
          * not null, display the error that occurred in the UI.
@@ -75,5 +77,6 @@ class ChampionFragment : Fragment(R.layout.fragment_champion) {
             }
         }
         viewModel.loadRotationData(getString(R.string.riotgames_api_key))
+//        viewModel.loadChampionData()
     }
 }
