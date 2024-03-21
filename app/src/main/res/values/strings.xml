@@ -3,23 +3,29 @@
     <string name="app_name">LeagueStats</string>
     <string name="title_home">LeagueStats</string>
     <string name="title_champion">Free Champion Rotation</string>
-    <string name="title_rank">Ranks</string>
+    <string name="title_rank">Top Ranked Players</string>
     <string name="title_settings">Settings</string>
     <string name="title_profile">Search</string>
 
     <!-- Navigation -->
     <string name="nav_bar_home">Home</string>
     <string name="nav_bar_champion">Champion</string>
-    <string name="nav_bar_rank">Ranks</string>
+    <string name="nav_bar_rank">Top Ranked Players</string>
     <string name="nav_bar_settings">Settings</string>
 
     <!-- Search -->
     <string name="search_hint">Search Summoner</string>
     <string name="search">Search</string>
 
-    <!-- Settings -->
+    <!-- Settings - Region -->
     <string name="key_region">summoner_region</string>
     <string name="title_region">Region</string>
     <string name="tip_region">Choose Region</string>
     <string name="default_region">na1</string>
+
+    <!-- Settings - Queue -->
+    <string name="rank_queue">rank_queue</string>
+    <string name="title_queue">Queue</string>
+    <string name="tip_queue">Choose Queue</string>
+    <string name="default_queue">RANKED_SOLO_5x5</string>
 </resources>

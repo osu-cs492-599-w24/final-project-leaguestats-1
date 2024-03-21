@@ -10,4 +10,12 @@
         <item>kr</item>
         <item>jp1</item>
     </string-array>
+    <string-array name="queue_options">
+        <item>Ranked Solo 5x5</item>
+        <item>Ranked Flex SR</item>
+    </string-array>
+    <string-array name="queue_values">
+        <item>RANKED_SOLO_5x5</item>
+        <item>RANKED_FLEX_SR</item>
+    </string-array>
 </resources>
