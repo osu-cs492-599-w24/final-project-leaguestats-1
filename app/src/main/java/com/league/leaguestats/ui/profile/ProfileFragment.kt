@@ -1,6 +1,8 @@
 package com.league.leaguestats.ui.profile
 
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
 import android.view.View
