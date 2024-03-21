@@ -31,6 +31,7 @@ interface MatchService {
     @GET("/lol/match/v5/matches/by-puuid/{puuid}/ids")
     suspend fun loadMatchHistoryData(
         @Path("puuid") puuid: String,
+        @Query("count") count: Int,
         @Query("api_key") apiKey: String
     ) : Response<List<String>>
 

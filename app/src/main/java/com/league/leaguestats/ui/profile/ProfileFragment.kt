@@ -45,7 +45,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         matchHistoryListRV.layoutManager = LinearLayoutManager(requireContext())
         matchHistoryListRV.setHasFixedSize(true)
         matchHistoryListRV.adapter = profileAdapter
-        
+
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         Log.d("ProfileFragment", "Using argument ${args.searchQuery}")
@@ -58,11 +58,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         region = prefs.getString(getString(R.string.key_region), "na1").toString()
-        viewModel.loadSummonerData(args.searchQuery, getString(R.string.riotgames_api_key), region)
+        viewModel.setKeyAndRegion(getString(R.string.riotgames_api_key), region)
+        viewModel.loadSummonerData(args.searchQuery)
 
         viewModel.matchHistoryData.observe(viewLifecycleOwner) { matchHistory ->
             if (matchHistory != null) {
-                profileAdapter.loadMatchHistoryData(matchHistory)
+                viewModel.loadMatchData(matchHistory)
+            }
+        }
+
+        viewModel.matchData.observe(viewLifecycleOwner) { matchData ->
+            if (matchData != null) {
+                profileAdapter.loadMatchData(matchData)
                 matchHistoryListRV.visibility = View.VISIBLE
                 matchHistoryListRV.scrollToPosition(0)
             }
@@ -86,7 +93,29 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 loadingIndicator.visibility = View.INVISIBLE
             }
         }
-        viewModel.loadMatchHistoryData("D5TENsrNRmN_7C0AzsV8j5r2rsSjtYiropqy_bIspU6u3ppnr49HKmxEGU8Ng5T5aElVOdFQbdIiiQ", getString(R.string.riotgames_api_key), region)
+
+        viewModel.summonerData.observe(viewLifecycleOwner) { summonerData ->
+            val summonerName = summonerData?.name
+            val puuid = summonerData?.puuid
+            if (summonerName != null) {
+                profileAdapter.updateSummonerName(summonerName)
+            }
+            if (puuid != null) {
+                viewModel.loadMatchHistoryData(puuid)
+            }
+        }
+
+        viewModel.summonerName.observe(viewLifecycleOwner) { name ->
+            if (name != null) {
+                profileAdapter.updateSummonerName(name)
+            }
+        }
+
+        viewModel.champData.observe(viewLifecycleOwner) {champData ->
+            if (champData!=null){
+                profileAdapter.updateChampData(champData)
+            }
+        }
     }
 
     override fun onResume() {
