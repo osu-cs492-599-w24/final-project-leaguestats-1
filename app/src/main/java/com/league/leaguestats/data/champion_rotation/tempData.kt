@@ -10,5 +10,6 @@ data class tempData(
 data class Champion(
     val id: String,
     val key: String,
-    val name: String
+    val name: String,
+    val title: String
 )
