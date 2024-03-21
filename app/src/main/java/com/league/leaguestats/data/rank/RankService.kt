@@ -1,31 +1,33 @@
-package com.league.leaguestats.data.champion_rotation
+package com.league.leaguestats.data.rank
 
+import android.util.Log
+import com.league.leaguestats.data.champion_rotation.ChampionRotationService
+import com.league.leaguestats.data.champion_rotation.FreeRotation
+import com.league.leaguestats.data.summoner.ProfileService
 import com.squareup.moshi.Moshi
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ChampionRotationService {
-    @GET("/lol/platform/v3/champion-rotations")
-    suspend fun loadChampionRotationData(
+interface RankService {
+    @GET("/lol/league/v4/challengerleagues/by-queue/{queue}")
+    suspend fun loadRankData(
+        @Path("queue") queueSelect: String,
         @Query("api_key") apiKey: String
-    ) : Response<FreeRotation>
+    ) : Response<RankLeaderboard>
 
     companion object {
-        private var userRegion = "na1"
-
         private fun getBaseUrl(userRegion: String): String {
-            val region = when (userRegion) {
-                "na1" -> "na1"
-                "jp1" -> "jp1"
-                else -> "na1" // Default region
+            return when (userRegion) {
+                "na1", "jp1", "kr" -> "https://$userRegion.api.riotgames.com"
+                else -> "https://na1.api.riotgames.com"
             }
-            return "https://$region.api.riotgames.com"
         }
-
-        private val BASE_URL = getBaseUrl(userRegion)
 
         /**
          * This method can be called as `RiotGamesService.create()` to create an object
@@ -33,15 +35,23 @@ interface ChampionRotationService {
          * the RiotGames API.
          */
 
-
-        fun create(): ChampionRotationService {
+        fun create(region: String): RankService {
+            val baseUrl = getBaseUrl(region)
+            Log.d("RiotGamesService", "Querying with baseUrl: $baseUrl")
+            val logger = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+            val client = OkHttpClient.Builder()
+                .addInterceptor(logger)
+                .build()
             val moshi = Moshi.Builder()
                 .build()
             return Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build()
-                .create(ChampionRotationService::class.java)
+                .create(RankService::class.java)
         }
     }
+
 }
