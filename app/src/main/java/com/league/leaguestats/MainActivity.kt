@@ -4,13 +4,19 @@ import android.os.Bundle
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.navigation.findNavController
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.preference.PreferenceManager
-import com.league.leaguestats.R
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,4 +47,18 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
+}
+
+@Composable
+fun BannerAd(modifier: Modifier = Modifier, adUnitId: String) {
+    AndroidView(
+        modifier = modifier,
+        factory = { context ->
+            AdView(context).also { adView ->
+                adView.setAdSize(AdSize.BANNER)
+                adView.adUnitId = adUnitId
+                adView.loadAd(AdRequest.Builder().build())
+            }
+        }
+    )
 }
