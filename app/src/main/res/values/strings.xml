@@ -10,7 +10,7 @@
     <!-- Navigation -->
     <string name="nav_bar_home">Home</string>
     <string name="nav_bar_champion">Champion</string>
-    <string name="nav_bar_rank">Top Ranked Players</string>
+    <string name="nav_bar_rank">Ranks</string>
     <string name="nav_bar_settings">Settings</string>
 
     <!-- Search -->
