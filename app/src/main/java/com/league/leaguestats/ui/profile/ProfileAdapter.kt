@@ -1,10 +1,13 @@
 package com.league.leaguestats.ui.profile
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.league.leaguestats.R
 import com.league.leaguestats.data.CircleTransform
@@ -52,6 +55,7 @@ class ProfileAdapter: RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
         private val killsTV: TextView = itemView.findViewById(R.id.match_kda)
         private val resultsTV: TextView = itemView.findViewById(R.id.match_win_loss)
 
+        @SuppressLint("ResourceAsColor")
         fun bindMatch(matchData: MatchData, summonerName: String, champMap: Map<String, Champion>) {
             val participant = matchData.info.participants.firstOrNull { it.summonerName == summonerName }
 
@@ -73,9 +77,10 @@ class ProfileAdapter: RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
                 killsTV.text = "KDA: ${it.kills}/${it.deaths}/${it.assists}"
                 if (it.win) {
                     resultsTV.text = "W"
-                }
-                else {
+                    resultsTV.setBackgroundColor(Color.parseColor("#00CC00"))
+                } else {
                     resultsTV.text = "L"
+                    resultsTV.setBackgroundColor(Color.parseColor("#FF0000"))
                 }
 
                 var champName = it.championName
