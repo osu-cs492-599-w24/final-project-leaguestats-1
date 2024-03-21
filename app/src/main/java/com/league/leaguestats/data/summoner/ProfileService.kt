@@ -34,6 +34,12 @@ interface ProfileService {
         @Query("api_key") apiKey: String
     ) : Response<SummonerData>
 
+    @GET("/lol/league/v4/entries/by-summoner/{encryptedSummonerId}")
+    suspend fun loadLeagueData(
+        @Path("encryptedSummonerId") encryptedSummonerId: String,
+        @Query("api_key") apiKey: String
+    ) : Response<List<LeagueData>>
+
     companion object {
         private fun getBaseUrl(userRegion: String): String {
             return when (userRegion) {

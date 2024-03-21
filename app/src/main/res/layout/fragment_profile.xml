@@ -28,7 +28,7 @@
         android:id="@+id/text_profile"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="viewStart"
         android:textColor="@color/black"
@@ -56,6 +56,14 @@
         app:layout_constraintVertical_bias="0.47000003"
         tools:text="Tag" />
 
+    <TextView
+        android:id="@+id/text_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        app:layout_constraintStart_toEndOf="@+id/image_profile_icon"
+        app:layout_constraintTop_toBottomOf="@+id/text_profile" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -71,8 +79,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
+            android:textAlignment="center"
             android:textAppearance="?attr/textAppearanceBody1"
-            android:textColor="?attr/colorError"
+            android:textColor="@color/black"
+            android:textSize="28sp"
             android:visibility="invisible" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -82,6 +92,7 @@
             android:indeterminate="true"
             android:layout_gravity="center"
             android:visibility="invisible" />
+
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

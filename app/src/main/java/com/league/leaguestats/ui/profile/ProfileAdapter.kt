@@ -1,6 +1,7 @@
 package com.league.leaguestats.ui.profile
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -92,7 +93,7 @@ class ProfileAdapter: RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
                     resultsTV.text = "L"
                     frameTV.setBackgroundColor(Color.parseColor("#FF0000"))
                 }
-
+                val status = if (it.win) "won" else "lost"
 
                 var champName = it.championName
                 var champId = findKeyByName(champMap, champName)
@@ -100,6 +101,17 @@ class ProfileAdapter: RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
                     .load("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/$champId.png")
                     .transform(CircleTransform())
                     .into(itemView.findViewById(R.id.image_match_champion))
+
+                itemView.setOnClickListener {
+                    val shareIntent = Intent().apply {
+                        action = Intent.ACTION_SEND
+
+                        putExtra(Intent.EXTRA_TEXT, "I $status a match playing as $champName! #LeagueStatsApp")
+                        type = "text/plain"
+                    }
+                    val shareIntentChooser = Intent.createChooser(shareIntent, null)
+                    itemView.context.startActivity(shareIntentChooser)
+                }
 
             } ?: run {
                 killsTV.text = "Name not found"

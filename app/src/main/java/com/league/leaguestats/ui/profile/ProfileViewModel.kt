@@ -25,12 +25,16 @@ class ProfileViewModel : ViewModel() {
     private var matchHistoryRepository: MatchHistoryRepository
     private var matchDataRepository: MatchDataRepository
     private var characterDataRepository: CharacterDataRepository
+    private var leagueDataRepository: LeagueDataRepository
 
     private val _titleText = MutableLiveData<String>().apply { value = "PROFILE" }
     val titleText: LiveData<String> = _titleText
 
     private val _summonerData = MutableLiveData<SummonerData?>(null)
     val summonerData: LiveData<SummonerData?> = _summonerData
+
+    private val _leagueData = MutableLiveData<List<LeagueData>?>(null)
+    val leagueData: LiveData<List<LeagueData>?> = _leagueData
 
     private val _champData = MutableLiveData<tempData?>(null)
     val champData: LiveData<tempData?> = _champData
@@ -62,6 +66,7 @@ class ProfileViewModel : ViewModel() {
         characterDataRepository = CharacterDataRepository(characterService)
         matchHistoryRepository = MatchHistoryRepository(matchService)
         matchDataRepository = MatchDataRepository(matchService)
+        leagueDataRepository = LeagueDataRepository(profileService)
     }
 
     fun setKeyAndRegion(settingsApiKey: String, settingsRegion: String) {
@@ -73,6 +78,7 @@ class ProfileViewModel : ViewModel() {
         viewModelScope.launch {
             _loading.value = true
             try {
+                summonerDataRepository = SummonerDataRepository(ProfileService.create(region))
                 val result = summonerDataRepository.loadSummonerData(name, apiKey)
                 _summonerData.value = result.getOrNull()
                 _summonerName.value = name
@@ -87,6 +93,7 @@ class ProfileViewModel : ViewModel() {
         viewModelScope.launch {
             _loading.value = true
             try {
+                matchHistoryRepository = MatchHistoryRepository(MatchService.create(region))
                 val result = matchHistoryRepository.loadMatchHistoryData(name, apiKey)
                 _matchHistoryData.value = result.getOrNull()
                 _error.value = result.exceptionOrNull()
@@ -98,6 +105,7 @@ class ProfileViewModel : ViewModel() {
 
     fun loadMatchData(matchIds: List<String>) {
         viewModelScope.launch {
+            matchDataRepository = MatchDataRepository(MatchService.create(region))
             val result2 = characterDataRepository.loadCharacterData()
             _champData.value = result2.getOrNull()
             _loading.value = true
@@ -111,6 +119,20 @@ class ProfileViewModel : ViewModel() {
 
                 _matchData.value = results.mapNotNull { it.getOrNull() }
                 _error.value = results.mapNotNull { it.exceptionOrNull() }.firstOrNull()
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun loadLeagueData(name: String) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                leagueDataRepository = LeagueDataRepository(ProfileService.create(region))
+                val result = leagueDataRepository.loadLeagueData(name, apiKey)
+                _leagueData.value = result.getOrNull()
+                _error.value = result.exceptionOrNull()
             } finally {
                 _loading.value = false
             }

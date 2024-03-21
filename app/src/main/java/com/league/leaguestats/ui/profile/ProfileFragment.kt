@@ -1,7 +1,6 @@
 package com.league.leaguestats.ui.profile
 
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +17,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.league.leaguestats.R
 import com.league.leaguestats.data.summoner.SummonerData
 import com.league.leaguestats.data.CircleTransform
+import com.league.leaguestats.data.summoner.LeagueData
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val args: ProfileFragmentArgs by navArgs()
@@ -29,6 +29,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var loadingIndicator: CircularProgressIndicator
 
     private lateinit var summonerNameTV: TextView
+    private lateinit var rankTV: TextView
     private lateinit var tagTV: TextView
     private lateinit var prefs: SharedPreferences
     private lateinit var region: String
@@ -51,11 +52,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         Log.d("ProfileFragment", "Using argument ${args.searchQuery}")
         summonerNameTV = view.findViewById(R.id.text_profile)
+        rankTV = view.findViewById(R.id.text_rank)
         tagTV = view.findViewById(R.id.tag)
 
         viewModel.summonerData.observe(viewLifecycleOwner) { summonerData ->
             if (summonerData != null) {
                 bind(summonerData)
+            }
+        }
+
+        viewModel.leagueData.observe(viewLifecycleOwner) { leagueData ->
+            if (leagueData != null) {
+                bindLeague(leagueData)
             }
         }
 
@@ -79,8 +87,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
             if (error != null) {
-                loadingErrorTV.text = "error"
-                loadingErrorTV.visibility = View.VISIBLE
+                if (summonerNameTV.text == "") {
+                    loadingErrorTV.text = "Player not found."
+                    loadingErrorTV.visibility = View.VISIBLE
+                }
                 Log.e(tag, "Error fetching data: ${error.message}")
                 error.printStackTrace()
             }
@@ -99,11 +109,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewModel.summonerData.observe(viewLifecycleOwner) { summonerData ->
             val summonerName = summonerData?.name
             val puuid = summonerData?.puuid
+            val encid = summonerData?.id
             if (summonerName != null) {
                 profileAdapter.updateSummonerName(summonerName)
             }
             if (puuid != null) {
                 viewModel.loadMatchHistoryData(puuid)
+            }
+            if (encid != null) {
+                viewModel.loadLeagueData(encid)
             }
         }
 
@@ -135,5 +149,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             .into(requireView().findViewById(R.id.image_profile_icon))
         summonerNameTV.text = summonerData.name
         tagTV.text = "#${region.uppercase()}"
+    }
+
+    private fun bindLeague(leagueData: List<LeagueData>?) {
+        if (!leagueData.isNullOrEmpty()) {
+            rankTV.text = "${leagueData[0].tier} ${leagueData[0].rank}"
+        } else {
+            rankTV.text = "No rank"
+        }
     }
 }
