@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -54,6 +55,9 @@ class ProfileAdapter: RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val killsTV: TextView = itemView.findViewById(R.id.match_kda)
         private val resultsTV: TextView = itemView.findViewById(R.id.match_win_loss)
+        private val frameTV: FrameLayout = itemView.findViewById(R.id.frame_win_loss)
+        private val timeTV: TextView = itemView.findViewById(R.id.match_length)
+        private val gameTV: TextView = itemView.findViewById(R.id.match_game_mode)
 
         @SuppressLint("ResourceAsColor")
         fun bindMatch(matchData: MatchData, summonerName: String, champMap: Map<String, Champion>) {
@@ -74,14 +78,21 @@ class ProfileAdapter: RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
             }
 
             participant?.let {
-                killsTV.text = "KDA: ${it.kills}/${it.deaths}/${it.assists}"
+                killsTV.text = "${it.kills}/${it.deaths}/${it.assists}"
+                val totalSeconds = it.timePlayed
+                val minutes = totalSeconds / 60
+                val seconds = totalSeconds % 60
+                gameTV.text = matchData.info.gameMode
+                timeTV.text = String.format("%d:%02d", minutes, seconds)
+
                 if (it.win) {
                     resultsTV.text = "W"
-                    resultsTV.setBackgroundColor(Color.parseColor("#00CC00"))
+                    frameTV.setBackgroundColor(Color.parseColor("#00CC00"))
                 } else {
                     resultsTV.text = "L"
-                    resultsTV.setBackgroundColor(Color.parseColor("#FF0000"))
+                    frameTV.setBackgroundColor(Color.parseColor("#FF0000"))
                 }
+
 
                 var champName = it.championName
                 var champId = findKeyByName(champMap, champName)

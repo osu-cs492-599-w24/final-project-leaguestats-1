@@ -42,7 +42,7 @@ class ChampionAdapter: RecyclerView.Adapter<ChampionAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(freeRotationList[position], ChampList)
+        holder.bind(freeRotationList[position], ChampList, position)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -60,7 +60,7 @@ class ChampionAdapter: RecyclerView.Adapter<ChampionAdapter.ViewHolder>() {
 //        }
 
 //        private val champIV: ImageView = itemView.findViewById(R.id.champion_image)
-        fun bind(champRotation: Int, champMap: Map<String,Champion>) {
+        fun bind(champRotation: Int, champMap: Map<String,Champion>, pos:Int) {
             champName = findXByY(champMap, champRotation.toString())
             champTV.text = champName
             Glide.with(itemView.context)
@@ -72,6 +72,9 @@ class ChampionAdapter: RecyclerView.Adapter<ChampionAdapter.ViewHolder>() {
             val url = Uri.parse("https://u.gg/lol/champions/"+ champName +"/build")
             val intent = Intent(Intent.ACTION_VIEW, url)
 
+            if(pos % 2 == 0){
+                itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            }
             itemView.setOnClickListener {
                 itemView.context.startActivity(intent)
                 true
