@@ -1,18 +1,19 @@
 # LeagueStats
 
-A League of Legends mobile tracking app.
-
 ## Description
 
-Description.
+A League of Legends mobile tracking app.
 
 ## Getting Started
 
 ### Requirements
-
-### Install
+An android device.
 
 ### Usage
+Navigate between the 4 screens using the bottom navigation bar.
+The home page has a search bar you can enter a summoner name of.
+You may click on game history and champion rotations for more functions.
+The settings menu can change which region you are searching in.
 
 ## Authors
 
@@ -25,6 +26,8 @@ Jongwon An (anjo@oregonstate.edu)
 
 * 0.0.1
     * Initial Prototype
+* 1.0.0
+    * Initial Completion
 
 ## License
 
