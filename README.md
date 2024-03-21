@@ -18,7 +18,7 @@ Description.
 
 Oliver Zhou (zhouo@oregonstate.edu)  
 Trent Matsumura (matsumut@oregonstate.edu)  
-Leon Ong  
+Leon Ong (ongl@oregonstate.edu)
 Jongwon An (anjo@oregonstate.edu) 
 
 ## Version History
