@@ -22,6 +22,7 @@ class RankFragment : Fragment(R.layout.fragment_rank) {
     private lateinit var loadingIndicator: CircularProgressIndicator
     private lateinit var region: String
     private lateinit var queue: String
+    private lateinit var title: String
     private lateinit var prefs: SharedPreferences
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,11 +77,23 @@ class RankFragment : Fragment(R.layout.fragment_rank) {
                 loadingIndicator.visibility = View.INVISIBLE
             }
         }
+
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         Log.d("RankFragment", "Attempting to update region.")
         region = prefs.getString(getString(R.string.key_region), "na1").toString()
         queue = prefs.getString(getString(R.string.rank_queue), "RANKED_SOLO_5x5").toString()
         viewModel.loadRankData(queue,getString(R.string.riotgames_api_key), region)
+        if(queue == "RANKED_FLEX_SR"){
+            title = "Ranked Flex SR"
+        }
+        if(queue == "RANKED_SOLO_5x5"){
+            title = "Ranked Solo 5x5"
+        }
+
+        val queueNameTV: TextView? = view.findViewById(R.id.queue_title)
+        if (queueNameTV != null){
+            queueNameTV.text = title
+        }
     }
 
     override fun onResume() {

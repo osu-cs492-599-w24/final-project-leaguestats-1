@@ -2,7 +2,7 @@
     <!-- Titles -->
     <string name="app_name">LeagueStats</string>
     <string name="title_home">LeagueStats</string>
-    <string name="title_champion">Champion</string>
+    <string name="title_champion">Free Champion Rotation</string>
     <string name="title_rank">Top Ranked Players</string>
     <string name="title_settings">Settings</string>
     <string name="title_profile">Search</string>
@@ -10,7 +10,7 @@
     <!-- Navigation -->
     <string name="nav_bar_home">Home</string>
     <string name="nav_bar_champion">Champion</string>
-    <string name="nav_bar_rank">Top Ranked Players</string>
+    <string name="nav_bar_rank">Ranks</string>
     <string name="nav_bar_settings">Settings</string>
 
     <!-- Search -->
