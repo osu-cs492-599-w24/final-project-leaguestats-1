@@ -26,20 +26,35 @@
 
     <TextView
         android:id="@+id/text_profile"
-        android:layout_width="256dp"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="viewStart"
-        android:textSize="24sp"
         android:textColor="@color/black"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.66"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toEndOf="@+id/image_profile_icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.068"
         tools:text="Summoner Name" />
+
+    <TextView
+        android:id="@+id/tag"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="6dp"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@id/text_profile"
+        app:layout_constraintStart_toEndOf="@id/text_profile"
+        app:layout_constraintTop_toTopOf="@id/text_profile"
+        app:layout_constraintVertical_bias="0.47000003"
+        tools:text="Tag" />
 
     <FrameLayout
         android:layout_width="match_parent"

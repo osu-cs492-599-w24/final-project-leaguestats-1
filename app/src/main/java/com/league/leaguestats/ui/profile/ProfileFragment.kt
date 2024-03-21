@@ -27,6 +27,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var loadingIndicator: CircularProgressIndicator
 
     private lateinit var summonerNameTV: TextView
+    private lateinit var tagTV: TextView
     private lateinit var prefs: SharedPreferences
     private lateinit var region: String
 
@@ -48,6 +49,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         Log.d("ProfileFragment", "Using argument ${args.searchQuery}")
         summonerNameTV = view.findViewById(R.id.text_profile)
+        tagTV = view.findViewById(R.id.tag)
 
         viewModel.summonerData.observe(viewLifecycleOwner) { summonerData ->
             if (summonerData != null) {
@@ -130,5 +132,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             .transform(CircleTransform())
             .into(requireView().findViewById(R.id.image_profile_icon))
         summonerNameTV.text = summonerData.name
+        tagTV.text = "#${region.uppercase()}"
     }
 }
