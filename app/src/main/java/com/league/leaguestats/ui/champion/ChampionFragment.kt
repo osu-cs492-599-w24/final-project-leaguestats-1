@@ -45,6 +45,11 @@ class ChampionFragment : Fragment(R.layout.fragment_champion) {
             }
         }
 
+        viewModel.champData.observe(viewLifecycleOwner) {champData ->
+            if (champData!=null){
+                championAdapter.updateChampData(champData)
+            }
+        }
         /*
          * Set up an observer on the error associated with the current API call.  If the error is
          * not null, display the error that occurred in the UI.
@@ -72,5 +77,6 @@ class ChampionFragment : Fragment(R.layout.fragment_champion) {
             }
         }
         viewModel.loadRotationData(getString(R.string.riotgames_api_key))
+//        viewModel.loadChampionData()
     }
 }

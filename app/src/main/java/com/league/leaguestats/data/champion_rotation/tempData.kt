@@ -1,10 +1,14 @@
 package com.league.leaguestats.data.champion_rotation
 
-data class tempData(
-    val data: ChampData
-)
+import com.squareup.moshi.JsonClass
 
-data class ChampData(
-    val key: Int,
+@JsonClass(generateAdapter = true)
+data class tempData(
+    val data: Map<String, Champion>
+)
+@JsonClass(generateAdapter = true)
+data class Champion(
+    val id: String,
+    val key: String,
     val name: String
 )
