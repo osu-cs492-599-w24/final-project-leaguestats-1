@@ -11,4 +11,13 @@
         android:entryValues="@array/region_values"
         android:defaultValue="@string/default_region"
         app:useSimpleSummaryProvider="true" />
+
+    <ListPreference
+        android:key="@string/rank_queue"
+        android:title="@string/title_queue"
+        android:dialogTitle="@string/tip_queue"
+        android:entries="@array/queue_options"
+        android:entryValues="@array/queue_values"
+        android:defaultValue="@string/default_queue"
+        app:useSimpleSummaryProvider="true" />
 </PreferenceScreen>
